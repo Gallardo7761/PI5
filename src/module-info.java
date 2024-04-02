@@ -1,6 +1,3 @@
-/**
- * 
- */
 module pi5 {
 	requires transitive datos_compartidos;
 	requires transitive grafos;
