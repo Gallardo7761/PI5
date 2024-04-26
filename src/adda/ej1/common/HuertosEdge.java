@@ -10,6 +10,6 @@ public record HuertosEdge(
 implements SimpleEdgeAction<HuertosVertex, Integer> {
     
 	public static HuertosEdge of(HuertosVertex v1, HuertosVertex v2, Integer action) {
-		return new HuertosEdge(v1, v2, action, action * 1.0);
+		return new HuertosEdge(v1, v2, action, action == -1 ? 0. : 1.);
 	}
 }

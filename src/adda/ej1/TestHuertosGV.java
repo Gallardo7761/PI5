@@ -1,6 +1,7 @@
 package adda.ej1;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.jgrapht.GraphPath;
@@ -12,6 +13,7 @@ import adda.ej1.common.HuertosVertex;
 import adda.ej1.common.SolucionHuertos;
 import adda.util.ConsoleColors;
 import adda.util.Titles;
+import us.lsi.colors.GraphColors;
 import us.lsi.common.String2;
 import us.lsi.graphs.alg.AStar;
 import us.lsi.graphs.alg.BT;
@@ -29,26 +31,20 @@ public class TestHuertosGV {
 			
 			System.out.println(ConsoleColors.RED + "A ESTRELLA"
 				+ String2.linea() + ConsoleColors.RESET);
-			testAstar();
+			testAstar(i);
 			
 			System.out.println(ConsoleColors.RED + "\nBACKTRACKING" 
 				+ String2.linea() + ConsoleColors.RESET);
-			testBT();
+			testBT(i);
 			
 			System.out.println(ConsoleColors.RED + "\nDINAMICA" 
 				+ String2.linea() + ConsoleColors.RESET);
-			testPDR();
+			testPDR(i);
 		});
 	}
 	
-	private static List<Integer> transform(
-			GraphPath<HuertosVertex,HuertosEdge> path) {
-		return path.getEdgeList().stream()
-			.map(e -> e.action()).toList();
-	}
-	
-	private static void testAstar() {
-		var g = EGraph.virtual(
+	private static void testAstar(int i) {
+		EGraph<HuertosVertex, HuertosEdge> g = EGraph.virtual(
 			HuertosVertex.initial(),
 			HuertosVertex.goal(),
 			PathType.Sum, Type.Max
@@ -57,38 +53,62 @@ public class TestHuertosGV {
 		.edgeWeight(e -> e.weight())
 		.build();
 		
-		var alg = AStar.of(g);
-		List<Integer> ls = transform(alg.search().get());
-		System.out.println(new SolucionHuertos(ls));
+		AStar<HuertosVertex, HuertosEdge,?> alg = AStar.of(g);
+		GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
+		List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
+					.collect(Collectors.toList());
+		SolucionHuertos sh = new SolucionHuertos(ls);
+		System.out.println(sh);
+		
+		/*GraphColors.toDot(alg.outGraph(), 
+				"generated/ej1AStar"+i+".dot",
+				v -> v.toString(),
+				e -> e.action().toString());*/
 	}
 	
-	private static void testBT() {
-		var g = EGraph.virtual(
-			HuertosVertex.initial(),
-			HuertosVertex.goal(),
-			PathType.Sum, Type.Max
-		)
-		.heuristic(HuertosHeuristic::heuristic)
-		.edgeWeight(e -> e.weight())
-		.build();
-		
-		var alg = BT.of(g);
-		List<Integer> ls = transform(alg.search().get());
-		System.out.println(new SolucionHuertos(ls));
+	private static void testBT(int i) {
+		EGraph<HuertosVertex, HuertosEdge> g = EGraph.virtual(
+				HuertosVertex.initial(),
+				HuertosVertex.goal(),
+				PathType.Sum, Type.Max
+			)
+			.heuristic(HuertosHeuristic::heuristic)
+			.edgeWeight(e -> e.weight())
+			.build();
+			
+			BT<HuertosVertex, HuertosEdge,?> alg = BT.of(g);
+			GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
+			List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
+						.collect(Collectors.toList());
+			SolucionHuertos sh = new SolucionHuertos(ls);
+			System.out.println(sh);
+			
+			/*GraphColors.toDot(alg.outGraph(), 
+					"generated/ej1BT"+i+".dot",
+					v -> v.toString(),
+					e -> e.action().toString());*/
 	}
 	
-	private static void testPDR() {
-		var g = EGraph.virtual(
-			HuertosVertex.initial(),
-			HuertosVertex.goal(),
-			PathType.Sum, Type.Max
-		)
-		.heuristic(HuertosHeuristic::heuristic)
-		.edgeWeight(e -> e.weight())
-		.build();
-		
-		var alg = PDR.of(g);
-		List<Integer> ls = transform(alg.search().get());
-		System.out.println(new SolucionHuertos(ls));
+	private static void testPDR(int i) {
+		EGraph<HuertosVertex, HuertosEdge> g = EGraph.virtual(
+				HuertosVertex.initial(),
+				HuertosVertex.goal(),
+				PathType.Sum, Type.Max
+			)
+			.heuristic(HuertosHeuristic::heuristic)
+			.edgeWeight(e -> e.weight())
+			.build();
+			
+			PDR<HuertosVertex, HuertosEdge,?> alg = PDR.of(g);
+			GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
+			List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
+						.collect(Collectors.toList());
+			SolucionHuertos sh = new SolucionHuertos(ls);
+			System.out.println(sh);
+			
+			/*GraphColors.toDot(alg.outGraph(), 
+					"generated/ej1PDR"+i+".dot",
+					v -> v.toString(),
+					e -> e.action().toString());*/
 	}
 }
