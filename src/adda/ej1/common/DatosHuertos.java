@@ -60,6 +60,10 @@ public class DatosHuertos {
 		return verduras.get(i);
 	}
 	
+	public static List<Verdura> getVerduras() {
+		return verduras;
+	}
+	
 	public static Huerto getHuerto(Integer j) {
 		return huertos.get(j);
 	}
@@ -80,11 +84,16 @@ public class DatosHuertos {
 		return huertos.get(j).metrosDisponibles();
 	}
 	
+	// Incompatible -> 1; Compatible -> 0
 	public static Integer incompatible(Integer i, Integer k) {
-		return verduras.get(i).incompatibles().contains(verduras.get(k).nombre()) ? 1 : 0;
+	    return verduras.get(i).incompatibles().contains(verduras.get(k).nombre()) ? 1 : 0;
 	}
 	
 	public static void main(String[] args) {
 		iniDatos("ficheros/ej1/Ejercicio1DatosEntrada1.txt");
+	}
+
+	public static List<Huerto> getHuertos() {
+		return huertos;
 	}
 }
