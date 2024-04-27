@@ -58,18 +58,6 @@ implements VirtualVertex<HuertosVertex, HuertosEdge, Integer> {
 		} else {
 			return List.of();
 		}
-		/*List<Integer> actions = new ArrayList<>();
-		if(this.index < DatosHuertos.getN()) {
-			for(int j = 0; j < DatosHuertos.getM(); j++) {
-				if(cabe(this.index, j) && compatible(this.index,j)) {
-					actions.add(j);
-				}
-			}
-			actions.add(-1);
-		} else {
-			return List.of();
-		}
-		return actions;*/
 	}
 
 	private boolean cabe(Integer i, Integer j) {

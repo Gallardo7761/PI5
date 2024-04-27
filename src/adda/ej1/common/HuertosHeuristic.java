@@ -4,10 +4,11 @@ import java.util.function.Predicate;
 
 public class HuertosHeuristic {
 
-    public static Double heuristic(
+	public static Double heuristic(
             HuertosVertex v1, 
             Predicate<HuertosVertex> goal,
             HuertosVertex v2) {
-    	return v1.index() * 1.;
-    }     
+		// MAXIMO DE VERDURAS PLANTABLES DE v1.index() HASTA DatosHuertos.getN()
+		return (double) DatosHuertos.getN() - v1.index();
+    }    
 }

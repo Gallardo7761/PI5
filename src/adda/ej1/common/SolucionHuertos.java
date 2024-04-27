@@ -26,9 +26,9 @@ public class SolucionHuertos {
 		index = 0;
 		solucion = new ArrayList<>();
 		ls.stream().forEach(hue -> {
-			if(hue > 0) {
+			if(hue != -1) {
 				Verdura v = DatosHuertos.getVerdura(index);
-				Huerto h = DatosHuertos.getHuerto(hue - 1);
+				Huerto h = DatosHuertos.getHuerto(hue);
 				solucion.add(Pair.of(v, h));
 			}
 			index++;
