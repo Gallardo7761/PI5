@@ -61,54 +61,44 @@ public class TestHuertosGV {
 		System.out.println(sh);
 		
 		GraphColors.toDot(alg.outGraph(), 
-				"generated/ej1AStar"+i+".dot",
+				"generated/ej1_f"+i+".dot",
 				v -> v.toString(),
 				e -> e.action().toString());
 	}
 	
 	private static void testBT(int i) {
 		EGraph<HuertosVertex, HuertosEdge> g = EGraph.virtual(
-				HuertosVertex.initial(),
-				HuertosVertex.goal(),
-				PathType.Sum, Type.Max
-			)
-			.heuristic(HuertosHeuristic::heuristic)
-			.edgeWeight(e -> e.weight())
-			.build();
-			
-			BT<HuertosVertex, HuertosEdge,?> alg = BT.of(g);
-			GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
-			List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
-						.collect(Collectors.toList());
-			SolucionHuertos sh = new SolucionHuertos(ls);
-			System.out.println(sh);
-			
-			/*GraphColors.toDot(alg.outGraph(), 
-					"generated/ej1BT"+i+".dot",
-					v -> v.toString(),
-					e -> e.action().toString());*/
+			HuertosVertex.initial(),
+			HuertosVertex.goal(),
+			PathType.Sum, Type.Max
+		)
+		.heuristic(HuertosHeuristic::heuristic)
+		.edgeWeight(e -> e.weight())
+		.build();
+		
+		BT<HuertosVertex, HuertosEdge,?> alg = BT.of(g);
+		GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
+		List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
+					.collect(Collectors.toList());
+		SolucionHuertos sh = new SolucionHuertos(ls);
+		System.out.println(sh);
 	}
 	
 	private static void testPDR(int i) {
 		EGraph<HuertosVertex, HuertosEdge> g = EGraph.virtual(
-				HuertosVertex.initial(),
-				HuertosVertex.goal(),
-				PathType.Sum, Type.Max
-			)
-			.heuristic(HuertosHeuristic::heuristic)
-			.edgeWeight(e -> e.weight())
-			.build();
-			
-			PDR<HuertosVertex, HuertosEdge,?> alg = PDR.of(g);
-			GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
-			List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
-						.collect(Collectors.toList());
-			SolucionHuertos sh = new SolucionHuertos(ls);
-			System.out.println(sh);
-			
-			/*GraphColors.toDot(alg.outGraph(), 
-					"generated/ej1PDR"+i+".dot",
-					v -> v.toString(),
-					e -> e.action().toString());*/
+			HuertosVertex.initial(),
+			HuertosVertex.goal(),
+			PathType.Sum, Type.Max
+		)
+		.heuristic(HuertosHeuristic::heuristic)
+		.edgeWeight(e -> e.weight())
+		.build();
+		
+		PDR<HuertosVertex, HuertosEdge,?> alg = PDR.of(g);
+		GraphPath<HuertosVertex, HuertosEdge> gp = alg.search().get();
+		List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
+					.collect(Collectors.toList());
+		SolucionHuertos sh = new SolucionHuertos(ls);
+		System.out.println(sh);
 	}
 }
