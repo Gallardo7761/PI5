@@ -58,6 +58,18 @@ implements VirtualVertex<HuertosVertex, HuertosEdge, Integer> {
 		} else {
 			return List.of();
 		}
+		/*List<Integer> actions = new ArrayList<>();
+		if(this.index < DatosHuertos.getN()) {
+			for(int j = 0; j < DatosHuertos.getM(); j++) {
+				if(cabe(this.index, j) && compatible(this.index,j)) {
+					actions.add(j);
+				}
+			}
+			actions.add(-1);
+		} else {
+			return List.of();
+		}
+		return actions;*/
 	}
 
 	private boolean cabe(Integer i, Integer j) {
@@ -71,19 +83,19 @@ implements VirtualVertex<HuertosVertex, HuertosEdge, Integer> {
 
 	@Override
 	public HuertosVertex neighbor(Integer a) {
+		List<Set<Integer>> nuevoReparto = new ArrayList<>();
+		for(Set<Integer> s : this.reparto) {
+			nuevoReparto.add(Set2.copy(s));
+		}
+		List<Integer> nuevosMetrosDisponibles = new ArrayList<>(this.metrosDisponibles);
+		
 		if(a == -1) {
-			return of(this.index + 1, this.reparto, this.metrosDisponibles);
+			return of(this.index + 1, nuevoReparto, nuevosMetrosDisponibles);
 		} else {			
-			List<Set<Integer>> nuevoReparto = new ArrayList<>();
-			for(Set<Integer> s : this.reparto) {
-				nuevoReparto.add(Set2.copy(s));
-			}
-			
 			Set<Integer> nuevoSet = nuevoReparto.get(a);
 			nuevoSet.add(this.index);
 			nuevoReparto.set(a, nuevoSet);
 			
-			List<Integer> nuevosMetrosDisponibles = new ArrayList<>(this.metrosDisponibles);
 			nuevosMetrosDisponibles.set(a, nuevosMetrosDisponibles.get(a) - 
 					DatosHuertos.getMetrosRequeridos(this.index));
 			

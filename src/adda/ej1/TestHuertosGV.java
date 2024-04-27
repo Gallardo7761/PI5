@@ -60,10 +60,10 @@ public class TestHuertosGV {
 		SolucionHuertos sh = new SolucionHuertos(ls);
 		System.out.println(sh);
 		
-		/*GraphColors.toDot(alg.outGraph(), 
+		GraphColors.toDot(alg.outGraph(), 
 				"generated/ej1AStar"+i+".dot",
 				v -> v.toString(),
-				e -> e.action().toString());*/
+				e -> e.action().toString());
 	}
 	
 	private static void testBT(int i) {
