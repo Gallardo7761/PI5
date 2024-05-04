@@ -33,6 +33,10 @@ implements VirtualVertex<CestaVertex, CestaEdge, Integer> {
 		return of(0,initValues().first(),initValues().second(),0);
 	}
 	
+	private Integer catActual() {
+		return DatosCesta.getCategoria(this.index);
+	}
+	
 	private static Pair<Set<Integer>,List<Integer>> initValues() {
 		Set<Integer> cpc = DatosCesta.getProductos().stream()
 				.map(Producto::categoria)
@@ -60,10 +64,17 @@ implements VirtualVertex<CestaVertex, CestaEdge, Integer> {
 		// Si se selecciona el producto i -> List.of(1)
 		// Si no se selecciona -> List.of(0)
 		if(this.index < DatosCesta.getN()) {
-			return List.of(1,0);
-		} else {
-			return List.of();
-		}
+			Integer cat = DatosCesta.getCategoria(this.index);
+			if((this.categoriasPorCubrir.size() != 0 && 
+					DatosCesta.getProducto(this.index)
+						.tieneCategoriaEn(this.categoriasPorCubrir)) &&
+				DatosCesta.getPresupuesto() - this.presupuestoRestante.get(cat) >= 0) {
+				return List.of(1,0);
+			} else {
+				return List.of(0);
+			}
+		} 
+		return List.of();
 	}
 	
 	private static boolean mediaValoracionesSupera(CestaVertex v) {
@@ -94,12 +105,14 @@ implements VirtualVertex<CestaVertex, CestaEdge, Integer> {
 			nuevasCategorias.remove(DatosCesta.getCategoria(this.index()));
 			
 			List<Integer> nuevoPresupuesto = List2.copy(this.presupuestoRestante());
-			nuevoPresupuesto.set(this.index(), nuevoPresupuesto.get(this.index()) -
-					DatosCesta.getPrecio(this.index()));
+			nuevoPresupuesto.set(this.catActual(), 
+					nuevoPresupuesto.get(this.catActual()) -
+						DatosCesta.getPrecio(this.index()));
 			
 			Integer nuevoAcum = this.acumValoracion();
 			
-			return of(this.index() + 1, nuevasCategorias, nuevoPresupuesto, nuevoAcum + this.index() - 3);
+			return of(this.index() + 1, nuevasCategorias, nuevoPresupuesto, 
+					nuevoAcum + DatosCesta.getValoracion(this.index) - 3);
 		}
 	}
 
@@ -108,4 +121,14 @@ implements VirtualVertex<CestaVertex, CestaEdge, Integer> {
 		return CestaEdge.of(this, neighbor(a), a);
 	}
 
+	public String toString() {
+		return "("+this.index+", "+this.categoriasPorCubrir()+", "+
+			this.presupuestoRestante()+", "+this.acumValoracion()+")";
+	}
+	
 }
+
+
+
+
+

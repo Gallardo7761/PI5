@@ -59,12 +59,12 @@ public class TestCesta {
 		List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
 					.collect(Collectors.toList());
 		SolucionCesta sh = new SolucionCesta(ls);
-		System.out.println(ls);
+		System.out.println(sh);
 		
-		/*GraphColors.toDot(alg.outGraph(), 
-				"generated/ej1_f"+i+".dot",
+		GraphColors.toDot(alg.outGraph(), 
+				"generated/ej2_f"+i+".dot",
 				v -> v.toString(),
-				e -> e.action().toString());*/
+				e -> e.action().toString());
 	}
 	
 	private static void testBT(int i) {
@@ -83,7 +83,7 @@ public class TestCesta {
 		List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
 					.collect(Collectors.toList());
 		SolucionCesta sh = new SolucionCesta(ls);
-		System.out.println(ls);
+		System.out.println(sh);
 	}
 	
 	private static void testPDR(int i) {
@@ -102,6 +102,6 @@ public class TestCesta {
 		List<Integer> ls = gp.getEdgeList().stream().map(x -> x.action())
 					.collect(Collectors.toList());
 		SolucionCesta sh = new SolucionCesta(ls);
-		System.out.println(ls);
+		System.out.println(sh);
 	}
 }

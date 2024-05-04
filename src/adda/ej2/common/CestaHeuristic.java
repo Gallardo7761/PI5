@@ -8,6 +8,7 @@ public class CestaHeuristic {
             Predicate<CestaVertex> goal,
             CestaVertex v2) {
 		// MÍNIMO PRECIO DESDE v1.index() HASTA DatosCesta.getN()
-		return Math.abs((double) v1.index() - DatosCesta.getN());
+		return Math.abs((double) DatosCesta.getPrecio(v1.index() == 0 ? 0 : v1.index() - 1) 
+				- DatosCesta.getPrecio(DatosCesta.getN() - 1));
     }   
 }

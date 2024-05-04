@@ -1,6 +1,7 @@
 package adda.ej2.common;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,6 +20,16 @@ public class DatosCesta {
 			List<Integer> datos = Stream.of(s.split(":"))
 					.map(Integer::valueOf).toList();
 			return new Producto(datos.get(0), datos.get(1), datos.get(2), datos.get(3));
+		}
+		
+		public boolean tieneCategoriaEn(Collection<Integer> categorias) {
+			boolean res = false;
+			for(Integer c : categorias) {
+				if(this.categoria == c) {
+					res = true;
+				}
+			}
+			return res;
 		}
 	}
 	

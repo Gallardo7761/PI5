@@ -10,6 +10,6 @@ public record CestaEdge(
 implements SimpleEdgeAction<CestaVertex, Integer> {
     
 	public static CestaEdge of(CestaVertex v1, CestaVertex v2, Integer action) {
-		return new CestaEdge(v1, v2, action, action == -1 ? 0. : 1.);
+		return new CestaEdge(v1, v2, action, action * 1.0);
 	}
 }
