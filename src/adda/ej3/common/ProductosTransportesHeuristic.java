@@ -9,10 +9,11 @@ public class ProductosTransportesHeuristic {
             Predicate<ProductosTransportesVertex> goal,
             ProductosTransportesVertex v2) {
 		// COSTE MINIMO EN SITIOS QUE AUN SE DEMANDA
+		int m = DatosProductosTransportes.getM();
 		return (double) ProductosTransportesVertex.initial().demandasRestantes().stream()
 					.filter(i -> i != 0)
 					.map(d -> ProductosTransportesVertex.initial().demandasRestantes().indexOf(d))
-					.map(s -> DatosProductosTransportes.getCoste(v1.z(), s))
+					.map(s -> DatosProductosTransportes.getCoste(v1.z()/m, s))
 					.min(Comparator.naturalOrder())
 					.get();
     } 

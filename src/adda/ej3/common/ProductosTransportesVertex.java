@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import adda.ej1.common.DatosHuertos;
 import adda.ej3.common.DatosProductosTransportes.Destino;
 import adda.ej3.common.DatosProductosTransportes.Producto;
+import us.lsi.common.List2;
 import us.lsi.common.Pair;
 import us.lsi.graphs.virtual.VirtualVertex;
 
@@ -18,6 +18,8 @@ public record ProductosTransportesVertex(
 		List<Integer> demandasRestantes) 
 implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, Integer>{
 
+	private static int m = DatosProductosTransportes.getM();
+	
 	public static ProductosTransportesVertex of(
 			Integer z,
 			List<Integer> unidadesRestantes,
@@ -45,7 +47,7 @@ implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, I
 	public List<Integer> actions() {
 		Stream<Integer> actions = IntStream.range(0, DatosProductosTransportes.getM())
 				.boxed()
-				.filter(j -> quedaProducto(this.z())) // hay unidades del producto
+				.filter(j -> quedaProducto(this.z()/m)) // hay unidades del producto
 				.filter(j -> !demandaMinimaOk(j)); // demanda minima no cubierta todavia
 		
 		if(this.z() < DatosProductosTransportes.getN() * DatosProductosTransportes.getM()) {
@@ -70,10 +72,22 @@ implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, I
 	@Override
 	public ProductosTransportesVertex neighbor(Integer a) {
 		// TODO Auto-generated method stub
+		Integer nuevoZ = this.z() + 1;
+		List<Integer> nuevasUnidadesRestantes = List2.copy(this.unidadesRestantes);
+		List<Integer> nuevasDemandasRestantes = List2.copy(this.demandasRestantes);
 		if(a == -1) {
-			return of(this.z() + 1, )
+			return of(nuevoZ, nuevasUnidadesRestantes, nuevasDemandasRestantes);
 		} else {
+			int i = this.z() / m;
+			int j = this.z() % m;
 			
+			int uRestantes = this.unidadesRestantes.get(i);
+			int dNoCubierta = this.demandasRestantes.get(j);
+			
+			nuevasUnidadesRestantes.set(i, uRestantes - a);
+			nuevasDemandasRestantes.set(j, dNoCubierta - a);
+			
+			return of(nuevoZ,nuevasUnidadesRestantes,nuevasDemandasRestantes);			
 		}
 	}
 
