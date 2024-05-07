@@ -2,9 +2,7 @@ package adda.ej3.common;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import adda.ej3.common.DatosProductosTransportes.Destino;
 import adda.ej3.common.DatosProductosTransportes.Producto;
@@ -18,12 +16,16 @@ public record ProductosTransportesVertex(
 		List<Integer> demandasRestantes) 
 implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, Integer>{
 
+	private static int i;
+	private static int j;
 	private static int m = DatosProductosTransportes.getM();
 	
 	public static ProductosTransportesVertex of(
 			Integer z,
 			List<Integer> unidadesRestantes,
 			List<Integer> demandasRestantes) {
+		i = z/m;
+		j = z%m;
 		return new ProductosTransportesVertex(z,unidadesRestantes,demandasRestantes);
 	}
 	
@@ -45,37 +47,18 @@ implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, I
 	
 	@Override
 	public List<Integer> actions() {
-		Stream<Integer> actions = IntStream.range(0, DatosProductosTransportes.getM())
+		return IntStream.rangeClosed(0, 
+				Math.min(
+					this.unidadesRestantes().get(i),
+					this.demandasRestantes().get(j))
+				)
 				.boxed()
-				.filter(j -> quedaProducto(this.z()/m)) // hay unidades del producto
-				.filter(j -> !demandaMinimaOk(j)); // demanda minima no cubierta todavia
-		
-		if(this.z() < DatosProductosTransportes.getN() * DatosProductosTransportes.getM()) {
-			List<Integer> res = actions.collect(Collectors.toList());
-			res.add(-1);
-			return res;
-		} else {
-			return List.of();
-		}
-	}
-	
-	private boolean demandaMinimaOk(Integer j) {
-		// TODO Auto-generated method stub
-		return this.demandasRestantes.get(j) == 0;
-	}
-
-	private boolean quedaProducto(Integer i) {
-		// TODO Auto-generated method stub
-		return this.unidadesRestantes.get(i) > 0;
+				.toList();
 	}
 
 	@Override
 	public ProductosTransportesVertex neighbor(Integer a) {
-		// TODO Auto-generated method stub
-		int i = this.z() / m;
-		int j = a;
-		 
-		Integer nuevoZ = i*m+j;
+		Integer nuevoZ = this.z + 1;
 		List<Integer> nuevasUnidadesRestantes = List2.copy(this.unidadesRestantes);
 		List<Integer> nuevasDemandasRestantes = List2.copy(this.demandasRestantes);
 		
