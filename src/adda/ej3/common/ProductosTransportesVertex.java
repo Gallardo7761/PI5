@@ -72,20 +72,20 @@ implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, I
 	@Override
 	public ProductosTransportesVertex neighbor(Integer a) {
 		// TODO Auto-generated method stub
-		Integer nuevoZ = this.z() + 1;
+		int i = this.z() / m;
+		int j = a;
+		 
+		Integer nuevoZ = i*m+j;
 		List<Integer> nuevasUnidadesRestantes = List2.copy(this.unidadesRestantes);
 		List<Integer> nuevasDemandasRestantes = List2.copy(this.demandasRestantes);
+		
 		if(a == -1) {
 			return of(nuevoZ, nuevasUnidadesRestantes, nuevasDemandasRestantes);
 		} else {
-			int i = this.z() / m;
-			int j = this.z() % m;
-			
 			int uRestantes = this.unidadesRestantes.get(i);
-			int dNoCubierta = this.demandasRestantes.get(j);
 			
-			nuevasUnidadesRestantes.set(i, uRestantes - a);
-			nuevasDemandasRestantes.set(j, dNoCubierta - a);
+			nuevasUnidadesRestantes.set(i, nuevasUnidadesRestantes.get(i) - uRestantes);
+			nuevasDemandasRestantes.set(j, nuevasDemandasRestantes.get(j) - uRestantes);
 			
 			return of(nuevoZ,nuevasUnidadesRestantes,nuevasDemandasRestantes);			
 		}

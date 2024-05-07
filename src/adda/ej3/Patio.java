@@ -12,15 +12,14 @@ public class Patio {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		DatosProductosTransportes.iniDatos("ficheros/ejercicios/Ejercicio3DatosEntrada1.txt");
-		int m = DatosProductosTransportes.getM();
-		int n = DatosProductosTransportes.getN();
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 5; j++) {
-				int z = i*m+j;
-				System.out.println(z%m);
-				//System.out.println(z/m);
-				//System.out.println(z%m);
-			}
-		}
+		System.out.println("(0,"+initialValues().toString().replace("(","").replace(")","")+")");
+	}
+	
+	private static Pair<List<Integer>,List<Integer>> initialValues() {
+		List<Integer> ur = DatosProductosTransportes.getProductos().stream()
+				.map(Producto::cantidad).toList();
+		List<Integer> dr = DatosProductosTransportes.getDestinos().stream()
+				.map(Destino::demanda).toList();
+		return Pair.of(ur, dr);
 	}
 }
