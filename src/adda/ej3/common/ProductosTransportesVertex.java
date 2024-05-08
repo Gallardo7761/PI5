@@ -92,4 +92,8 @@ implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, I
 		return ProductosTransportesEdge.of(this, neighbor(a), a);
 	}
 
+	public String toString() {
+		return "("+this.z+","+this.unidadesRestantes+","+this.demandasRestantes+")";
+	}
+	
 }
