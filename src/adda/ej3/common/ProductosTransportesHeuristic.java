@@ -1,33 +1,19 @@
 package adda.ej3.common;
 
-import java.util.Comparator;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
 
 public class ProductosTransportesHeuristic {
-	public static Double heuristic(
-			ProductosTransportesVertex v1, 
-            Predicate<ProductosTransportesVertex> goal,
-            ProductosTransportesVertex v2) {
-		// COSTE MINIMO EN SITIOS QUE AUN SE DEMANDA
-		int m = DatosProductosTransportes.getM();
-		return (double) ProductosTransportesVertex.initial().demandasRestantes().stream()
-					.filter(i -> i != 0)
-					.map(d -> ProductosTransportesVertex.initial().demandasRestantes().indexOf(d))
-					.map(s -> DatosProductosTransportes.getCoste(v1.z()/m, s))
-					.min(Comparator.naturalOrder())
-					.get();
-		/*List<Integer> ls = ProductosTransportesVertex.initial().demandasRestantes();
-		List<Integer> ls2 = new ArrayList<>();
-		List<Integer> ls3 = new ArrayList<>();
-		for(Integer i : ls) {
-			if(i != 0) {
-				ls2.add(ls.indexOf(i));
-			}
-		}
-		for(Integer i : ls2) {
-           ls3.add(DatosProductosTransportes.getCoste(v1.z()/m, i));
-		}
-		Double res = (double) ls3.stream().min(Comparator.naturalOrder()).get();
-		return res;*/
-    } 
+	public static Double heuristic(ProductosTransportesVertex v1, Predicate<ProductosTransportesVertex> goal,
+			ProductosTransportesVertex v2) {
+		// COSTE MINIMO DE PRODS AUN DEMANDADOS EN [z, n*m)
+		if (v1.demandasRestantes().stream().allMatch(x -> x <= 0))
+			return 0.;
+		Integer ultimoIndice = DatosProductosTransportes.getM() * DatosProductosTransportes.getN();
+		return IntStream.range(v1.z(), ultimoIndice)
+				.filter(i -> v1.demandasRestantes().get(i % DatosProductosTransportes.getM()) > 0)
+				.mapToDouble(i -> DatosProductosTransportes.getCoste(i / DatosProductosTransportes.getM(),
+						i % DatosProductosTransportes.getM()))
+				.min().orElse(Double.MAX_VALUE);
+	}
 }

@@ -11,7 +11,10 @@ implements SimpleEdgeAction<ProductosTransportesVertex, Integer> {
 	
 	public static ProductosTransportesEdge of(ProductosTransportesVertex v1, 
 			ProductosTransportesVertex v2, Integer action) {
-		return new ProductosTransportesEdge(v1, v2, action, action * 1.0);
+		int i = v1.z() / DatosProductosTransportes.getM();
+		int j = v1.z() % DatosProductosTransportes.getM();
+		double w = DatosProductosTransportes.getCoste(i, j) * action;
+		return new ProductosTransportesEdge(v1, v2, action, w);
 	}
 	
 }

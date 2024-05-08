@@ -50,6 +50,7 @@ public class TestProductosTransportes {
 			PathType.Sum, Type.Min
 		)
 		.heuristic(ProductosTransportesHeuristic::heuristic)
+		.goalHasSolution(ProductosTransportesVertex.goalHasSolution())
 		.edgeWeight(e -> e.weight())
 		.build();
 		
@@ -73,6 +74,7 @@ public class TestProductosTransportes {
 			PathType.Sum, Type.Min
 		)
 		.heuristic(ProductosTransportesHeuristic::heuristic)
+		.goalHasSolution(ProductosTransportesVertex.goalHasSolution())
 		.edgeWeight(e -> e.weight())
 		.build();
 		
@@ -91,6 +93,7 @@ public class TestProductosTransportes {
 			PathType.Sum, Type.Min
 		)
 		.heuristic(ProductosTransportesHeuristic::heuristic)
+		.goalHasSolution(ProductosTransportesVertex.goalHasSolution())
 		.edgeWeight(e -> e.weight())
 		.build();
 		

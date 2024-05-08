@@ -1,8 +1,8 @@
 package adda.ej3.common;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
 
 import adda.ej3.common.DatosProductosTransportes.Destino;
 import adda.ej3.common.DatosProductosTransportes.Producto;
@@ -15,17 +15,11 @@ public record ProductosTransportesVertex(
 		List<Integer> unidadesRestantes,
 		List<Integer> demandasRestantes) 
 implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, Integer>{
-
-	private static int i;
-	private static int j;
-	private static int m = DatosProductosTransportes.getM();
 	
 	public static ProductosTransportesVertex of(
 			Integer z,
 			List<Integer> unidadesRestantes,
 			List<Integer> demandasRestantes) {
-		i = z/m;
-		j = z%m;
 		return new ProductosTransportesVertex(z,unidadesRestantes,demandasRestantes);
 	}
 	
@@ -41,42 +35,60 @@ implements VirtualVertex<ProductosTransportesVertex, ProductosTransportesEdge, I
 		return Pair.of(ur, dr);
 	}
 
+	// GOAL OK
 	public static Predicate<ProductosTransportesVertex> goal() {
 		return v -> v.z() == DatosProductosTransportes.getN() * DatosProductosTransportes.getM();
 	}
 	
-	@Override
-	public List<Integer> actions() {
-		return IntStream.rangeClosed(0, 
-				Math.min(
-					this.unidadesRestantes().get(i),
-					this.demandasRestantes().get(j))
-				)
-				.boxed()
-				.toList();
+	// GOALHASSOLUTION OK
+	public static Predicate<ProductosTransportesVertex> goalHasSolution() {
+		return v -> v.demandasRestantes.stream().allMatch(d -> d == 0);
 	}
+	
+	// ACTIONS OK
+	public List<Integer> actions() {
+		// TODO Auto-generated method stub
+		List<Integer> actions = new ArrayList<>();
+		Integer totVars = DatosProductosTransportes.getN() *
+				DatosProductosTransportes.getM();
 
-	@Override
-	public ProductosTransportesVertex neighbor(Integer a) {
-		Integer nuevoZ = this.z + 1;
-		List<Integer> nuevasUnidadesRestantes = List2.copy(this.unidadesRestantes);
-		List<Integer> nuevasDemandasRestantes = List2.copy(this.demandasRestantes);
-		
-		if(a == -1) {
-			return of(nuevoZ, nuevasUnidadesRestantes, nuevasDemandasRestantes);
+		if(z < totVars) {
+			Integer uds = this.unidadesRestantes
+					.get(z/DatosProductosTransportes.getM());
+			Integer dem = this.demandasRestantes
+					.get(z%DatosProductosTransportes.getM());
+			if (dem == 0 || uds == 0) {
+				actions = List.of(0);
+			} else if (uds < 0) {
+				return List2.empty();
+			} else if (uds < dem) {
+				actions = List.of(0, uds);
+			} else {
+				actions = List.of(0, dem);
+			}
+			return actions;
 		} else {
-			int uRestantes = this.unidadesRestantes.get(i);
-			
-			nuevasUnidadesRestantes.set(i, nuevasUnidadesRestantes.get(i) - uRestantes);
-			nuevasDemandasRestantes.set(j, nuevasDemandasRestantes.get(j) - uRestantes);
-			
-			return of(nuevoZ,nuevasUnidadesRestantes,nuevasDemandasRestantes);			
+			return actions;
 		}
 	}
 
+	// NEIGHBOR OK
+	@Override
+	public ProductosTransportesVertex neighbor(Integer a) {
+		Integer i = this.z / DatosProductosTransportes.getM();
+		Integer j = this.z % DatosProductosTransportes.getM();
+		List<Integer> nuevasUnidadesRestantes = new ArrayList<>(unidadesRestantes());
+		List<Integer> nuevasDemandasRestantes = new ArrayList<>(demandasRestantes());
+
+		nuevasUnidadesRestantes.set(i, nuevasUnidadesRestantes.get(i) - a);
+		nuevasDemandasRestantes.set(j, nuevasDemandasRestantes.get(j) - a);
+		
+		return of(this.z + 1, nuevasUnidadesRestantes, nuevasDemandasRestantes);
+	}
+
+	// EDGE OK
 	@Override
 	public ProductosTransportesEdge edge(Integer a) {
-		// TODO Auto-generated method stub
 		return ProductosTransportesEdge.of(this, neighbor(a), a);
 	}
 
