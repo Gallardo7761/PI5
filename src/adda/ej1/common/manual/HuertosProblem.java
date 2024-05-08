@@ -3,13 +3,11 @@ package adda.ej1.common.manual;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import adda.ej1.common.DatosHuertos;
-import adda.ej1.common.HuertosVertex;
 import adda.ej1.common.DatosHuertos.Huerto;
 import us.lsi.common.Set2;
 
