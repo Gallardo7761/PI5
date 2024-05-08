@@ -14,6 +14,7 @@ import adda.ej1.common.SolucionHuertos;
 import adda.util.ConsoleColors;
 import adda.util.Titles;
 import us.lsi.colors.GraphColors;
+import us.lsi.colors.GraphColors.Color;
 import us.lsi.common.String2;
 import us.lsi.graphs.alg.AStar;
 import us.lsi.graphs.alg.BT;
@@ -63,7 +64,9 @@ public class TestHuertosGV {
 		GraphColors.toDot(alg.outGraph(), 
 				"generated/ej1_f"+i+".dot",
 				v -> v.toString(),
-				e -> e.action().toString());
+				e -> e.action().toString(),
+				v -> GraphColors.color(Color.black),
+				e -> GraphColors.colorIf(Color.red, gp.getEdgeList().contains(e)));
 	}
 	
 	private static void testBT(int i) {
