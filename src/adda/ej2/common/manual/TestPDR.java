@@ -14,7 +14,7 @@ public class TestPDR {
 				+ ConsoleColors.RESET);
 			DatosCesta.iniDatos("ficheros/ejercicios/Ejercicio2DatosEntrada"+i+".txt");
 			
-			System.out.println(ConsoleColors.RED + "\nPDR" 
+			System.out.println(ConsoleColors.RED + "\nPDR MANUAL" 
 				+ String2.linea() + ConsoleColors.RESET);
 			System.out.println(CestaPDR.search());
 		});

@@ -1,22 +1,25 @@
-package adda.ej1.common.manual;
+package adda.ej3.common.manual;
 
 import java.util.stream.IntStream;
 
-import adda.ej1.common.DatosHuertos;
+import adda.ej3.common.DatosProductosTransportes;
 import adda.util.ConsoleColors;
 import adda.util.Titles;
 import us.lsi.common.String2;
 
-public class TestPDR {
+public class TestBT {
 	public static void main(String[] args) {
 		IntStream.range(1, 4).forEach(i -> {
 			System.out.println(ConsoleColors.BLUE + Titles.getTitle(i) 
 				+ ConsoleColors.RESET);
-			DatosHuertos.iniDatos("ficheros/ejercicios/Ejercicio1DatosEntrada"+i+".txt");
+			DatosProductosTransportes.iniDatos("ficheros/ejercicios/Ejercicio3DatosEntrada"+i+".txt");
 			
-			System.out.println(ConsoleColors.RED + "\nPDR MANUAL" 
+			System.out.println(ConsoleColors.RED + "\nBT MANUAL" 
 				+ String2.linea() + ConsoleColors.RESET);
-			System.out.println(HuertosPDR.search());
+			
+			ProductosTransportesBT.search();
+			
+			System.out.println(ProductosTransportesBT.sol());
 		});
 	}
 }
